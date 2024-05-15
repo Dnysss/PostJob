@@ -38,7 +38,7 @@ const Post = () => {
                     {job.title}
                   </h5>
                   <Link
-                    to="/job"
+                    to={`/job/${job._id}`}
                     className="bg-[#6DE754]  rounded-xl focus:ring-4 focus:outline-none font-medium text-sm px-4 py-2"
                   >
                     View
