@@ -1,4 +1,5 @@
 const Job = require("./../models/Job");
+const ObjectId = require("mongoose").Types.ObjectId;
 
 module.exports = class JobController {
   static async create(req, res) {
@@ -27,6 +28,24 @@ module.exports = class JobController {
       res.status(500).json({ message: err });
     }
   }
+
+  static async getJobById(req, res) {
+    const id = req.params.id;
+
+    if (!ObjectId.isValid(id)) {
+      res.status(422).json({ message: "Id invalid." });
+      return;
+    }
+
+    const job = await Job.findOne({ _id: id });
+
+    if (!job) {
+      res.status(404).json({ message: "Not Found!" });
+      return;
+    }
+
+    res.status(200).json({
+      job: job,
+    });
+  }
 };
-
-
