@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import api from "../../utils/api";
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from "react-router-dom";
 
 const Form = () => {
-  const navigate = useNavigate();
-
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -12,22 +10,32 @@ const Form = () => {
     email: "",
     salary: "",
   });
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      const response = await api.post("/jobs/add", formData);
-      console.log("Response:", response.data);
-      navigate("/");
-      // Faça qualquer ação adicional, como redirecionar o usuário ou exibir uma mensagem de sucesso
-    } catch (error) {
-      console.error("Error:", error);
-      // Lide com o erro, como exibir uma mensagem de erro para o usuário
-    }
+    api
+      .post("/job/create", formData)
+      .then((response) => {
+        console.log("Job created successfully:", response.data);
+        // Limpar o formulário após o envio bem-sucedido
+        setFormData({
+          title: "",
+          description: "",
+          company: "",
+          email: "",
+          salary: "",
+        });
+        // Navegar para a rota após o envio bem-sucedido
+        navigate("/");
+      })
+      .catch((err) => console.log("Error creating job:", err));
   };
+
   return (
     <div className="mt-10 text-center text-[#6DE754] lg:col-span-2 my-10">
       <h1 className="md:text-4xl sm:text-3xl text-2xl font-bold py-2">
