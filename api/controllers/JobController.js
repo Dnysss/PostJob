@@ -48,4 +48,18 @@ module.exports = class JobController {
       job: job,
     });
   }
+
+  static async getJobByName(req, res) {
+    try {
+      const searchTerm = req.query.search; // Obtém o termo de pesquisa da solicitação
+      const regex = new RegExp(searchTerm, "i"); // Cria uma expressão regular para fazer a busca sem diferenciar maiúsculas e minúsculas
+
+      // Consulta o banco de dados MongoDB para encontrar empregos com o título que corresponde ao termo de pesquisa
+      const jobs = await Job.findOne({ title: regex });
+      res.json(jobs); // Retorna os resultados como JSON
+    } catch (err) {
+      console.error("Error searching for jobs:", err);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  }
 };
