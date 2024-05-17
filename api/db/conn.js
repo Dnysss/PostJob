@@ -1,8 +1,12 @@
+require("dotenv").config();
 const mongoose = require('mongoose');
+
+const mongoURI = process.env.MONGO_URI;
+
 
 async function connectToDatabase() {
     try {
-        await mongoose.connect('mongodb+srv://denysmchl:d12e08y20@postjob.hevxosr.mongodb.net/?retryWrites=true&w=majority&appName=postjob');
+        await mongoose.connect(mongoURI);
         console.log("Conectado ao MongoDB!");
     } catch (error) {
         console.error("Erro ao conectar ao MongoDB:", error);
